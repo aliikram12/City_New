@@ -145,8 +145,7 @@ body {
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-top: 0;
-  padding-top: 80px;
+  margin-top: 90px;
 }
 
 /* Dark tint to make text pop */
@@ -179,8 +178,7 @@ body {
 }
 
 .logo-box {
-  width: 80px;
-  margin-bottom: 30px;
+  width: 100px;
 }
 
 .main-logo {
@@ -526,6 +524,7 @@ body {
 
 .servicesSwiper {
   padding: 20px 10px 60px 10px;
+  overflow: visible;
 }
 
 .service-card {
@@ -533,6 +532,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 40px 30px;
+  margin: 0px 18px;
   height: 100%;
   transition: 0.3s;
   position: relative;
@@ -641,6 +641,13 @@ body {
 .swiper-button-next,
 .swiper-button-prev {
   color: #00d2d3;
+}
+
+.swiper-button-prev {
+  margin-left: -35px;
+}
+.swiper-button-next{
+  margin-right: -35px;
 }
 
 /* Why Choose Us Section */
