@@ -230,10 +230,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ----- CONFIGURATION -----
     const partners = [
       { name: 'MULTI ASPECTS', url: 'https://nafeth.com', img: 'logo2.png' },
-      { name: 'TAQAAN TECH',       url: 'https://techpartner1.com', img: 'logo7.png' },
+      { name: 'TAQAAN TECH',       url: 'https://taqaantech.com', img: 'logo7.png' },
       { name: '@ Xpert Software',      url: 'https://cloudsolutions.com', img: 'logo3.png' },
       { name: 'INFERNO ONLINE',      url: 'https://networkpartner.com', img: 'logo6.png' },
-      { name: 'MALOON Finance',       url: 'https://maloon.com', img: 'logo1.png' },
+      { name: 'MALOON Finance',       url: 'https://maloon.sa', img: 'logo1.png' },
       { name: 'BOUD',          url: 'https://tasman.tech', img: 'logo5.png' },
       { name: 'Nafith',               url: 'https://nafith.com', img: 'logo4.png' }
     ];
