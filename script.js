@@ -96,7 +96,7 @@ function initServicesSlider() {
     spaceBetween: 30,
     loop: true,
     autoplay: {
-      delay: 5000,
+      delay: 3000,
       disableOnInteraction: false,
     },
     pagination: {
@@ -226,196 +226,190 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  (function() {
-    // ----- CONFIGURATION -----
-    const partners = [
-      { name: 'MULTI ASPECTS', url: 'https://nafeth.com', img: 'logo2.png' },
-      { name: 'TAQAAN TECH',       url: 'https://taqaantech.com', img: 'logo7.png' },
-      { name: '@ Xpert Software',      url: 'https://cloudsolutions.com', img: 'logo3.png' },
-      { name: 'INFERNO ONLINE',      url: 'https://networkpartner.com', img: 'logo6.png' },
-      { name: 'MALOON Finance',       url: 'https://maloon.sa', img: 'logo1.png' },
-      { name: 'BOUD',          url: 'https://tasman.tech', img: 'logo5.png' },
-      { name: 'Nafith',               url: 'https://nafith.com', img: 'logo4.png' }
-    ];
+(function() {
 
-    const visibleCount = 4;          // number of logos shown at once
-    const autoSlideInterval = 3000;   // 5 seconds
+  // ----- CONFIGURATION -----
+  const partners = [
+    { name: 'MULTI ASPECTS', url: 'https://nafeth.com', img: 'logo2.png' },
+    { name: 'TAQAAN TECH', url: 'https://taqaantech.com', img: 'logo7.png' },
+    { name: '@ Xpert Software', url: 'https://cloudsolutions.com', img: 'logo3.png' },
+    { name: 'INFERNO ONLINE', url: 'https://networkpartner.com', img: 'logo6.png' },
+    { name: 'MALOON Finance', url: 'https://maloon.sa', img: 'logo1.png' },
+    { name: 'BOUD', url: 'https://tasman.tech', img: 'logo5.png' },
+    { name: 'Nafith', url: 'https://nafith.com', img: 'logo4.png' }
+  ];
 
-    // ----- SETUP -----
-    const track = document.querySelector('.carousel-track');
-    const dotsContainer = document.querySelector('.carousel-dots');
-    const prevBtn = document.querySelector('.carousel-btn.prev');
-    const nextBtn = document.querySelector('.carousel-btn.next');
+  const autoSlideInterval = 3000;
 
-    let currentIndex = visibleCount;   // start at first real slide after clones
-    let slideWidth = 0;                // will be recalculated on resize
-    let transitionEnabled = true;
+  // ✅ BREAKPOINT FUNCTION
+  function getVisibleCount() {
+    if (window.innerWidth <= 768) return 1; // small screens
+    return 4; // large screens
+  }
 
-    // Build slides: create clones and real slides
-    function buildSlides() {
-      // Create real slides
-      const realSlides = partners.map((p, idx) => {
-        const slide = document.createElement('div');
-        slide.className = 'partner-slide';
-        slide.dataset.index = idx;   // store real index
-        slide.innerHTML = `
-          <a href="${p.url}" target="_blank" rel="noopener noreferrer">
-            <img src="${p.img}" alt="${p.name}" loading="lazy"
-                 onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100?text=Logo';">
-            <span>${p.name}</span>
-          </a>
-        `;
-        return slide;
-      });
+  let visibleCount = getVisibleCount();
 
-      // Clone first `visibleCount` slides for the end (to allow seamless forward scrolling)
-      const clonesBefore = [];
-      for (let i = visibleCount; i > 0; i--) {
-        const clone = realSlides[realSlides.length - i].cloneNode(true);
-        clone.classList.add('clone');
-        clonesBefore.push(clone);
-      }
+  // ----- SETUP -----
+  const track = document.querySelector('.carousel-track');
+  const dotsContainer = document.querySelector('.carousel-dots');
+  const prevBtn = document.querySelector('.carousel-btn.prev');
+  const nextBtn = document.querySelector('.carousel-btn.next');
 
-      // Clone last `visibleCount` slides for the beginning (to allow seamless backward scrolling)
-      const clonesAfter = [];
-      for (let i = 0; i < visibleCount; i++) {
-        const clone = realSlides[i].cloneNode(true);
-        clone.classList.add('clone');
-        clonesAfter.push(clone);
-      }
+  let currentIndex = visibleCount;
+  let slideWidth = 0;
 
-      // Assemble track: clonesBefore + realSlides + clonesAfter
-      track.innerHTML = '';  // clear
-      clonesBefore.forEach(c => track.appendChild(c));
-      realSlides.forEach(s => track.appendChild(s));
-      clonesAfter.forEach(c => track.appendChild(c));
+  // ----- BUILD SLIDES -----
+  function buildSlides() {
 
-      // Create navigation dots (based on real slides count)
-      dotsContainer.innerHTML = '';
-      partners.forEach((_, idx) => {
-        const dot = document.createElement('button');
-        dot.className = 'dot';
-        dot.dataset.index = idx;
-        dot.addEventListener('click', () => goToRealIndex(idx));
-        dotsContainer.appendChild(dot);
-      });
-    }
+    visibleCount = getVisibleCount();
+    currentIndex = visibleCount;
 
-    // Update active dot
-    function updateDots() {
-      const realIndex = getRealIndex(currentIndex);
-      document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === realIndex);
-      });
-    }
+    const realSlides = partners.map((p, idx) => {
+      const slide = document.createElement('div');
+      slide.className = 'partner-slide';
+      slide.dataset.index = idx;
 
-    // Convert absolute slide index to real partner index (0-based)
-    function getRealIndex(absIndex) {
-      const totalReal = partners.length;
-      const offset = visibleCount;  // clones before
-      const realIndex = (absIndex - offset + totalReal) % totalReal;
-      return realIndex;
-    }
-
-    // Move to a specific absolute index (with or without transition)
-    function goToAbsoluteIndex(index, smooth = true) {
-      if (!smooth) transitionEnabled = false;
-      currentIndex = index;
-      const translateX = -currentIndex * (slideWidth + 20); // 20px gap
-      track.style.transition = smooth ? 'transform 0.5s ease-in-out' : 'none';
-      track.style.transform = `translateX(${translateX}px)`;
-
-      // Update dots immediately (they reflect real partner)
-      updateDots();
-
-      // If we jumped out of bounds, reset to corresponding real slide without transition
-      const totalSlides = track.children.length;
-      const realSlidesCount = partners.length;
-      const firstRealIndex = visibleCount;
-      const lastRealIndex = firstRealIndex + realSlidesCount - 1;
-
-      if (currentIndex < firstRealIndex || currentIndex > lastRealIndex) {
-        // Loop back to the other side
-        let newIndex;
-        if (currentIndex < firstRealIndex) {
-          newIndex = currentIndex + realSlidesCount;
-        } else {
-          newIndex = currentIndex - realSlidesCount;
-        }
-        // Perform jump without transition
-        setTimeout(() => {
-          transitionEnabled = false;
-          goToAbsoluteIndex(newIndex, false);
-        }, 500); // after transition ends
-      }
-    }
-
-    // Go to a real partner index (0-based)
-    function goToRealIndex(realIndex, smooth = true) {
-      const absIndex = realIndex + visibleCount;
-      goToAbsoluteIndex(absIndex, smooth);
-    }
-
-    // Next slide
-    function nextSlide() {
-      goToAbsoluteIndex(currentIndex + 1);
-    }
-
-    // Previous slide
-    function prevSlide() {
-      goToAbsoluteIndex(currentIndex - 1);
-    }
-
-    // Recalculate slide width based on container size
-    function updateSlideWidth() {
-      const wrapper = document.querySelector('.carousel-track-wrapper');
-      const wrapperWidth = wrapper.getBoundingClientRect().width;
-      const gap = 20;  // matches .carousel-track gap
-      const gapsTotal = gap * (visibleCount - 1);
-      slideWidth = (wrapperWidth - gapsTotal) / visibleCount;
-
-      // Set each slide's width to match calculation (already handled by flex-basis, but we need to ensure consistent)
-      document.querySelectorAll('.partner-slide').forEach(slide => {
-        slide.style.flexBasis = `${slideWidth}px`;
-      });
-
-      // Reposition without animation
-      goToAbsoluteIndex(currentIndex, false);
-    }
-
-    // Initialize
-    buildSlides();
-
-    // Set up event listeners
-    prevBtn.addEventListener('click', () => {
-      nextSlide();  // because of infinite loop direction, but we want previous: actually call prevSlide
-    });
-    // Correction: we have next and prev buttons, so:
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
-
-    // Auto slide
-    let autoTimer = setInterval(nextSlide, autoSlideInterval);
-
-    // Pause on hover (optional, good UX)
-    const container = document.querySelector('.carousel-container');
-    container.addEventListener('mouseenter', () => clearInterval(autoTimer));
-    container.addEventListener('mouseleave', () => {
-      autoTimer = setInterval(nextSlide, autoSlideInterval);
+      slide.innerHTML = `
+        <a href="${p.url}" target="_blank" rel="noopener noreferrer">
+          <img src="${p.img}" alt="${p.name}" loading="lazy"
+          onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100?text=Logo';">
+          <span>${p.name}</span>
+        </a>
+      `;
+      return slide;
     });
 
-    // Handle resize
-    window.addEventListener('resize', () => {
-      updateSlideWidth();
+    const clonesBefore = [];
+    for (let i = visibleCount; i > 0; i--) {
+      const clone = realSlides[realSlides.length - i].cloneNode(true);
+      clone.classList.add('clone');
+      clonesBefore.push(clone);
+    }
+
+    const clonesAfter = [];
+    for (let i = 0; i < visibleCount; i++) {
+      const clone = realSlides[i].cloneNode(true);
+      clone.classList.add('clone');
+      clonesAfter.push(clone);
+    }
+
+    track.innerHTML = '';
+    clonesBefore.forEach(c => track.appendChild(c));
+    realSlides.forEach(s => track.appendChild(s));
+    clonesAfter.forEach(c => track.appendChild(c));
+
+    // dots
+    dotsContainer.innerHTML = '';
+    partners.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.dataset.index = idx;
+      dot.addEventListener('click', () => goToRealIndex(idx));
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function getRealIndex(absIndex) {
+    const totalReal = partners.length;
+    const offset = visibleCount;
+    return (absIndex - offset + totalReal) % totalReal;
+  }
+
+  function updateDots() {
+    const realIndex = getRealIndex(currentIndex);
+    document.querySelectorAll('.dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === realIndex);
+    });
+  }
+
+  function goToAbsoluteIndex(index, smooth = true) {
+    currentIndex = index;
+
+    const translateX = -currentIndex * (slideWidth + 20);
+
+    track.style.transition = smooth
+      ? 'transform 0.5s ease-in-out'
+      : 'none';
+
+    track.style.transform = `translateX(${translateX}px)`;
+
+    updateDots();
+
+    const realSlidesCount = partners.length;
+    const firstRealIndex = visibleCount;
+    const lastRealIndex = firstRealIndex + realSlidesCount - 1;
+
+    if (currentIndex < firstRealIndex || currentIndex > lastRealIndex) {
+      let newIndex;
+
+      if (currentIndex < firstRealIndex)
+        newIndex = currentIndex + realSlidesCount;
+      else
+        newIndex = currentIndex - realSlidesCount;
+
+      setTimeout(() => {
+        goToAbsoluteIndex(newIndex, false);
+      }, 500);
+    }
+  }
+
+  function goToRealIndex(realIndex) {
+    goToAbsoluteIndex(realIndex + visibleCount);
+  }
+
+  function nextSlide() {
+    goToAbsoluteIndex(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToAbsoluteIndex(currentIndex - 1);
+  }
+
+  // ----- WIDTH CALCULATION -----
+  function updateSlideWidth() {
+
+    const wrapper = document.querySelector('.carousel-track-wrapper');
+    const wrapperWidth = wrapper.getBoundingClientRect().width;
+
+    const gap = 20;
+    const gapsTotal = gap * (visibleCount - 1);
+
+    slideWidth = (wrapperWidth - gapsTotal) / visibleCount;
+
+    document.querySelectorAll('.partner-slide').forEach(slide => {
+      slide.style.flexBasis = `${slideWidth}px`;
     });
 
-    // Initial width calculation and positioning
-    setTimeout(() => {
-      updateSlideWidth();
-    }, 100);
+    goToAbsoluteIndex(currentIndex, false);
+  }
 
-    // Ensure transition is re‑enabled after a jump without transition
-    track.addEventListener('transitionend', () => {
-      transitionEnabled = true;
-    });
-  })();
+  // ----- INIT -----
+  buildSlides();
+
+  prevBtn.addEventListener('click', prevSlide);
+  nextBtn.addEventListener('click', nextSlide);
+
+  let autoTimer = setInterval(nextSlide, autoSlideInterval);
+
+  const container = document.querySelector('.carousel-container');
+
+  container.addEventListener('mouseenter', () => clearInterval(autoTimer));
+
+  container.addEventListener('mouseleave', () => {
+    autoTimer = setInterval(nextSlide, autoSlideInterval);
+  });
+
+  // ✅ RESPONSIVE REBUILD
+  window.addEventListener('resize', () => {
+    const newCount = getVisibleCount();
+
+    if (newCount !== visibleCount) {
+      buildSlides();
+    }
+
+    updateSlideWidth();
+  });
+
+  setTimeout(updateSlideWidth, 100);
+
+})();

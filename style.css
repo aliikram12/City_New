@@ -515,7 +515,7 @@ body {
 
 .servicesSwiper {
   padding: 20px 10px 60px 10px;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .service-card {
@@ -641,10 +641,10 @@ body {
 }
 
 .swiper-button-prev {
-  margin-left: -35px;
+  margin-left: -20px;
 }
 .swiper-button-next{
-  margin-right: -35px;
+  margin-right: -20px;
 }
 
 /* Why Choose Us Section */
@@ -769,9 +769,10 @@ body {
 }
 
 .capabilities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .capability-item {
@@ -781,6 +782,7 @@ body {
   padding: 30px;
   text-align: center;
   transition: 0.3s;
+  width: 25vw;
 }
 
 .capability-item:hover {
@@ -796,12 +798,12 @@ body {
 
 
 .capability-item h3 {
-  font-size: 1.5rem;
-  color: #ffffff;
+  font-size: 1.4rem;
+  color: #00d2d3;
   font-weight: 700;
 }
 .capability-item h6 {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #ffffff;
   font-weight: 500;
 }
@@ -872,6 +874,7 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     position: relative;
+
   }
   .section-header {
     text-align: center;
