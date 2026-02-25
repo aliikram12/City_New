@@ -49,9 +49,9 @@ function initChart() {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['2010', '2020', '2025', '2030', '2035', '2040', '2045', '2050'],
+      labels: ['2010', '2020', '2025', '2030'],
       datasets: [{
-        data: [100, 150, 200, 300, 400, 500, 650, 850],
+        data: [30, 150, 200, 300, 400],
         borderColor: '#00d2d3',
         borderWidth: 3,
         fill: true,
