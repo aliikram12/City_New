@@ -228,20 +228,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 (function() {
 
-  // ----- CONFIGURATION -----
   const partners = [
     { name: 'MULTI ASPECTS', url: 'https://nafeth.com', img: 'logo2.png' },
     { name: 'TAQAAN TECH', url: 'https://taqaantech.com', img: 'logo7.png' },
-    { name: '@ Xpert Software', url: 'https://cloudsolutions.com', img: 'logo3.png' },
+    { name: '@ Xpert Software', url: 'https://expert.om', img: 'logo3.png' },
     { name: 'INFERNO ONLINE', url: 'https://networkpartner.com', img: 'logo6.png' },
     { name: 'MALOON Finance', url: 'https://maloon.sa', img: 'logo1.png' },
-    { name: 'BOUD', url: 'https://tasman.tech', img: 'logo5.png' },
+    { name: 'BOUD', url: 'https://boud.ai', img: 'logo5.png' },
     { name: 'Nafith', url: 'https://nafith.com', img: 'logo4.png' }
   ];
 
   const autoSlideInterval = 3000;
 
-  // ✅ BREAKPOINT FUNCTION
   function getVisibleCount() {
     if (window.innerWidth <= 768) return 1; // small screens
     return 4; // large screens
@@ -249,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let visibleCount = getVisibleCount();
 
-  // ----- SETUP -----
   const track = document.querySelector('.carousel-track');
   const dotsContainer = document.querySelector('.carousel-dots');
   const prevBtn = document.querySelector('.carousel-btn.prev');
@@ -258,7 +255,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentIndex = visibleCount;
   let slideWidth = 0;
 
-  // ----- BUILD SLIDES -----
   function buildSlides() {
 
     visibleCount = getVisibleCount();
@@ -365,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function() {
     goToAbsoluteIndex(currentIndex - 1);
   }
 
-  // ----- WIDTH CALCULATION -----
   function updateSlideWidth() {
 
     const wrapper = document.querySelector('.carousel-track-wrapper');
@@ -383,7 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
     goToAbsoluteIndex(currentIndex, false);
   }
 
-  // ----- INIT -----
   buildSlides();
 
   prevBtn.addEventListener('click', prevSlide);
@@ -399,7 +393,6 @@ document.addEventListener('DOMContentLoaded', function() {
     autoTimer = setInterval(nextSlide, autoSlideInterval);
   });
 
-  // ✅ RESPONSIVE REBUILD
   window.addEventListener('resize', () => {
     const newCount = getVisibleCount();
 
