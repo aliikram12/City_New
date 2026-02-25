@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const visibleCount = 4;          // number of logos shown at once
-    const autoSlideInterval = 5000;   // 5 seconds
+    const autoSlideInterval = 3000;   // 5 seconds
 
     // ----- SETUP -----
     const track = document.querySelector('.carousel-track');
