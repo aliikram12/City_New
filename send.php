@@ -30,8 +30,8 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'aliikram6151772@gmail.com';
-    $mail->Password   = 'ttcbmnanuhdvcksn';
+    $mail->Username   = 'mailtestingm@gmail.com';
+    $mail->Password   = 'rrfwegnkbpdhnzhs';
 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
@@ -47,8 +47,8 @@ try {
         ]
     ];
 
-    $mail->setFrom('aliikram6151772@gmail.com', 'Website Contact');
-    $mail->addAddress('aliikram6151772@gmail.com');
+    $mail->setFrom('mailtestingm@gmail.com', 'Website Contact');
+    $mail->addAddress('mailtestingm@gmail.com');
 
     if(!empty($email)){
         $mail->addReplyTo($email, $name);
